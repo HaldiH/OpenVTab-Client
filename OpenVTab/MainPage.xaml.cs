@@ -31,7 +31,7 @@ namespace OpenVTab
         public MainPage()
         {
             _frame = (Frame) Window.Current.Content;
-            _conn = new Connection("127.0.0.1", 4444);
+            _conn = new Connection("192.168.2.30", 4444);
             this.InitializeComponent();
 
             _frame.SizeChanged += new SizeChangedEventHandler(Container_SizeChanged);

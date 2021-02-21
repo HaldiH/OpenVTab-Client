@@ -14,8 +14,8 @@
   <mp:PhoneIdentity PhoneProductId="1eab7c77-f401-43bf-8a08-2b62f9742b6a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>VTablet</DisplayName>
-    <PublisherDisplayName>hugo1</PublisherDisplayName>
+    <DisplayName>OpenVTab</DisplayName>
+    <PublisherDisplayName>Hugo Haldi</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -45,5 +45,6 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="privateNetworkClientServer"/>
   </Capabilities>
 </Package>

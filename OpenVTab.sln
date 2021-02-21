@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VTablet", "VTablet\VTablet.csproj", "{C23D7D39-FD16-4560-AEB3-1FBFABF21074}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenVTab", "OpenVTab\OpenVTab.csproj", "{C23D7D39-FD16-4560-AEB3-1FBFABF21074}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
