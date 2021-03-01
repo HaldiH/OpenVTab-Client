@@ -26,15 +26,11 @@ namespace OpenVTab
     public sealed partial class MainPage : Page
     {
         private readonly Connection _conn;
-        private readonly Frame _frame;
 
         public MainPage()
         {
-            _frame = (Frame) Window.Current.Content;
             _conn = new Connection("192.168.2.30", 4444);
             this.InitializeComponent();
-
-            _frame.SizeChanged += new SizeChangedEventHandler(Container_SizeChanged);
 
             // Declare the pointer event handlers.
             Target.PointerCanceled += new PointerEventHandler(Target_PointerCanceled);
@@ -45,23 +41,9 @@ namespace OpenVTab
             Target.PointerPressed += new PointerEventHandler(Target_PointerPressed);
             Target.PointerReleased += new PointerEventHandler(Target_PointerReleased);
             Target.PointerWheelChanged += new PointerEventHandler(Target_PointerWheelChanged);
-
-            //_conn.SendConfig(new ConfigData(Target.Width, Target.Height));
+            
             _conn.CanvasSize = Target.RenderSize;
         }
-
-        private void Container_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var width = _frame.ActualWidth;
-            var height = _frame.ActualHeight;
-            Target.Width = width;
-            Target.Height = height;
-            Container.Width = width;
-            Container.Height = height;
-            _conn.CanvasSize = new Size(width, height);
-            //_conn.SendEvent(WindowEventType.WindowSizeChanged, Window.Current);
-        }
-
 
         private void Target_PointerCanceled(object sender, PointerRoutedEventArgs e)
         {

@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using Windows.ApplicationModel.Core;
-using Windows.Devices.Bluetooth.Background;
 using Windows.Foundation;
 using Windows.UI.Input;
-using Windows.UI.Notifications;
-using Windows.UI.Xaml;
-using Microsoft.Win32.SafeHandles;
 
 namespace OpenVTab
 {
@@ -26,15 +19,9 @@ namespace OpenVTab
         PointerWheelChanged = 7
     }
 
-    public enum WindowEventType
-    {
-        WindowSizeChanged = 0
-    }
-
     public enum EventType
     {
-        Pointer = 0,
-        Window = 1
+        Pointer = 0
     }
 
     [Flags]
@@ -56,17 +43,6 @@ namespace OpenVTab
         XButton2Pressed = 1 << 12
     }
 
-    internal struct ConfigData
-    {
-        public double Width, Height;
-
-        public ConfigData(double width, double height)
-        {
-            Width = width;
-            Height = height;
-        }
-    }
-
     internal class Connection
     {
         private readonly Socket _socket;
@@ -84,19 +60,6 @@ namespace OpenVTab
         public bool IsConnected()
         {
             return _socket.Connected;
-        }
-
-        public int SendConfig(ConfigData data)
-        {
-            int rc;
-            var total = 0;
-            if ((rc = _socket.Send(BitConverter.GetBytes(data.Width))) < 0)
-                return -1;
-            total += rc;
-            if ((rc = _socket.Send(BitConverter.GetBytes(data.Height))) < 0)
-                return -1;
-            total += rc;
-            return total;
         }
 
         private int SendPointerPointProperties(PointerPointProperties properties)
@@ -184,17 +147,12 @@ namespace OpenVTab
 
         private int SendPointerEventType(PointerEventType eventType)
         {
-            return _socket.Send(new byte[] {(byte) eventType});
-        }
-
-        private int SendWindowEventType(WindowEventType eventType)
-        {
-            return _socket.Send(new byte[] {(byte) eventType});
+            return _socket.Send(new[] {(byte) eventType});
         }
 
         private int SendEventType(EventType eventType)
         {
-            return _socket.Send(new byte[] {(byte) eventType});
+            return _socket.Send(new[] {(byte) eventType});
         }
 
         private int SendPointerEvent(PointerEventType eventType, PointerPoint ptrPt)
@@ -205,51 +163,6 @@ namespace OpenVTab
                 return -1;
             total += rc;
             if ((rc = SendPointerPoint(ptrPt)) < 0)
-                return -1;
-            total += rc;
-            return total;
-        }
-
-        private int SendSize(Size size)
-        {
-            int rc;
-            var total = 0;
-            if ((rc = _socket.Send(BitConverter.GetBytes(size.Width))) < 0)
-                return -1;
-            total += rc;
-            if ((rc = _socket.Send(BitConverter.GetBytes(size.Height))) < 0)
-                return -1;
-            total += rc;
-            return total;
-        }
-
-        private int SendWindow(Window window)
-        {
-            return SendSize(window.Content.RenderSize);
-        }
-
-
-        private int SendWindowEvent(WindowEventType eventType, Window window)
-        {
-            int rc;
-            var total = 0;
-            if ((rc = SendWindowEventType(eventType)) < 0)
-                return -1;
-            total += rc;
-            if ((rc = SendWindow(window)) < 0)
-                return -1;
-            total += rc;
-            return total;
-        }
-
-        public int SendEvent(WindowEventType eventType, Window window)
-        {
-            int rc;
-            var total = 0;
-            if ((rc = SendEventType(EventType.Window)) < 0)
-                return -1;
-            total += rc;
-            if ((rc = SendWindowEvent(eventType, window)) < 0)
                 return -1;
             total += rc;
             return total;
